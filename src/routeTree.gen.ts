@@ -9,13 +9,23 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as ResourcesRouteImport } from './routes/resources'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as FaqRouteImport } from './routes/faq'
 import { Route as DisordersRouteImport } from './routes/disorders'
+import { Route as DashboardRouteImport } from './routes/dashboard'
+import { Route as CognitiveRouteImport } from './routes/cognitive'
+import { Route as ChatRouteImport } from './routes/chat'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 
+const ResourcesRoute = ResourcesRouteImport.update({
+  id: '/resources',
+  path: '/resources',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RegisterRoute = RegisterRouteImport.update({
   id: '/register',
   path: '/register',
@@ -31,9 +41,29 @@ const LoginRoute = LoginRouteImport.update({
   path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
+const FaqRoute = FaqRouteImport.update({
+  id: '/faq',
+  path: '/faq',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DisordersRoute = DisordersRouteImport.update({
   id: '/disorders',
   path: '/disorders',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardRoute = DashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CognitiveRoute = CognitiveRouteImport.update({
+  id: '/cognitive',
+  path: '/cognitive',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ChatRoute = ChatRouteImport.update({
+  id: '/chat',
+  path: '/chat',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
@@ -50,54 +80,108 @@ const IndexRoute = IndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/chat': typeof ChatRoute
+  '/cognitive': typeof CognitiveRoute
+  '/dashboard': typeof DashboardRoute
   '/disorders': typeof DisordersRoute
+  '/faq': typeof FaqRoute
   '/login': typeof LoginRoute
   '/profile': typeof ProfileRoute
   '/register': typeof RegisterRoute
+  '/resources': typeof ResourcesRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/chat': typeof ChatRoute
+  '/cognitive': typeof CognitiveRoute
+  '/dashboard': typeof DashboardRoute
   '/disorders': typeof DisordersRoute
+  '/faq': typeof FaqRoute
   '/login': typeof LoginRoute
   '/profile': typeof ProfileRoute
   '/register': typeof RegisterRoute
+  '/resources': typeof ResourcesRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/chat': typeof ChatRoute
+  '/cognitive': typeof CognitiveRoute
+  '/dashboard': typeof DashboardRoute
   '/disorders': typeof DisordersRoute
+  '/faq': typeof FaqRoute
   '/login': typeof LoginRoute
   '/profile': typeof ProfileRoute
   '/register': typeof RegisterRoute
+  '/resources': typeof ResourcesRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/disorders' | '/login' | '/profile' | '/register'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/chat'
+    | '/cognitive'
+    | '/dashboard'
+    | '/disorders'
+    | '/faq'
+    | '/login'
+    | '/profile'
+    | '/register'
+    | '/resources'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/disorders' | '/login' | '/profile' | '/register'
+  to:
+    | '/'
+    | '/about'
+    | '/chat'
+    | '/cognitive'
+    | '/dashboard'
+    | '/disorders'
+    | '/faq'
+    | '/login'
+    | '/profile'
+    | '/register'
+    | '/resources'
   id:
     | '__root__'
     | '/'
     | '/about'
+    | '/chat'
+    | '/cognitive'
+    | '/dashboard'
     | '/disorders'
+    | '/faq'
     | '/login'
     | '/profile'
     | '/register'
+    | '/resources'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  ChatRoute: typeof ChatRoute
+  CognitiveRoute: typeof CognitiveRoute
+  DashboardRoute: typeof DashboardRoute
   DisordersRoute: typeof DisordersRoute
+  FaqRoute: typeof FaqRoute
   LoginRoute: typeof LoginRoute
   ProfileRoute: typeof ProfileRoute
   RegisterRoute: typeof RegisterRoute
+  ResourcesRoute: typeof ResourcesRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/resources': {
+      id: '/resources'
+      path: '/resources'
+      fullPath: '/resources'
+      preLoaderRoute: typeof ResourcesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/register': {
       id: '/register'
       path: '/register'
@@ -119,11 +203,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/faq': {
+      id: '/faq'
+      path: '/faq'
+      fullPath: '/faq'
+      preLoaderRoute: typeof FaqRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/disorders': {
       id: '/disorders'
       path: '/disorders'
       fullPath: '/disorders'
       preLoaderRoute: typeof DisordersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard': {
+      id: '/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cognitive': {
+      id: '/cognitive'
+      path: '/cognitive'
+      fullPath: '/cognitive'
+      preLoaderRoute: typeof CognitiveRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/chat': {
+      id: '/chat'
+      path: '/chat'
+      fullPath: '/chat'
+      preLoaderRoute: typeof ChatRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about': {
@@ -146,10 +258,15 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  ChatRoute: ChatRoute,
+  CognitiveRoute: CognitiveRoute,
+  DashboardRoute: DashboardRoute,
   DisordersRoute: DisordersRoute,
+  FaqRoute: FaqRoute,
   LoginRoute: LoginRoute,
   ProfileRoute: ProfileRoute,
   RegisterRoute: RegisterRoute,
+  ResourcesRoute: ResourcesRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
