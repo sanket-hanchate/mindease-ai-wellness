@@ -1,5 +1,6 @@
 const Groq = require("groq-sdk");
 const Chat = require("../models/Chat");
+const Conversation = require("../models/Conversation");
 
 const groq = new Groq({
   apiKey: process.env.GROQ_API_KEY,
@@ -38,6 +39,24 @@ exports.sendMessage = async (req, res) => {
       role: "user",
       message,
     });
+
+    const conversation =
+  await Conversation.findById(
+    conversationId
+  );
+
+if (
+  conversation &&
+  conversation.title === "New Chat"
+) {
+
+  conversation.title =
+    message.length > 30
+      ? message.substring(0, 30) + "..."
+      : message;
+
+  await conversation.save();
+}
 
     // AI response
     const completion =

@@ -9,6 +9,7 @@ require("../middleware/authMiddleware");
 const {
   createConversation,
   getConversations,
+  deleteConversation,
 } =
 require("../controllers/conversationController");
 
@@ -22,6 +23,12 @@ router.get(
   "/",
   authMiddleware,
   getConversations
+);
+
+router.delete(
+  "/:id",
+  authMiddleware,
+  deleteConversation
 );
 
 module.exports = router;

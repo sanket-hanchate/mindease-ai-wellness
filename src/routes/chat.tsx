@@ -4,7 +4,7 @@ import { Layout } from "@/components/Layout";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Send, Sparkles, Plus, MessageCircle, User as UserIcon, Bot } from "lucide-react";
+import { Send, Sparkles, Plus, MessageCircle, User as UserIcon, Bot, Trash2 } from "lucide-react";
 import { useAuth } from "@/lib/auth";
 
 export const Route = createFileRoute("/chat")({
@@ -87,49 +87,39 @@ function ChatPage() {
 
       }
     };
-    const loadConversations = async () => {
-
-      try {
-
-        const token =
-          localStorage.getItem("mindease.token");
-
-        const res = await fetch(
-          "http://localhost:5000/api/conversations",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-
-        const data = await res.json();
-
-        setConversations(data);
-
-        if (data.length > 0) {
-
-          setSelectedConversation(
-            data[0]._id
-          );
-
-          loadMessages(
-            data[0]._id
-          );
-
-        }
-
-      } catch (error) {
-
-        console.error(error);
-
-      }
-    };
 
 
     loadHistory();
-    loadConversations();
 
+  }, []);
+
+  const loadConversations = async () => {
+    try {
+      const token =
+        localStorage.getItem(
+          "mindease.token"
+        );
+
+      const res = await fetch(
+        "http://localhost:5000/api/conversations",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const data =
+        await res.json();
+
+      setConversations(data);
+
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  useEffect(() => {
+    loadConversations();
   }, []);
 
   const loadMessages = async (
@@ -236,6 +226,8 @@ function ChatPage() {
         );
       }
 
+      await loadConversations();
+
       setMessages((prev) => [
         ...prev,
         {
@@ -310,6 +302,54 @@ function ChatPage() {
     }
   };
 
+  const deleteConversation =
+    async (
+      conversationId: string
+    ) => {
+
+      try {
+
+        const token =
+          localStorage.getItem(
+            "mindease.token"
+          );
+
+        await fetch(
+          `http://localhost:5000/api/conversations/${conversationId}`,
+          {
+            method: "DELETE",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        setConversations((prev) =>
+          prev.filter(
+            (c) =>
+              c._id !== conversationId
+          )
+        );
+
+        if (
+          selectedConversation ===
+          conversationId
+        ) {
+
+          setMessages([]);
+
+          setSelectedConversation(
+            null
+          );
+        }
+
+      } catch (error) {
+
+        console.error(error);
+
+      }
+    };
+
   const loadConversation = async (
     conversationId: string
   ) => {
@@ -370,18 +410,47 @@ function ChatPage() {
             <div className="flex-1 overflow-y-auto p-2">
               <p className="px-2 py-1.5 text-xs font-semibold text-muted-foreground uppercase">Recent</p>
               {conversations.map((c) => (
-                <button key={c._id} onClick={() =>
-                  loadConversation(c._id)
-                } className={`w-full text-left flex items-start gap-2 rounded-lg px-2 py-2 transition ${selectedConversation === c._id
-                    ? "bg-secondary"
-                    : "hover:bg-secondary"
-                  }`}>
-                  <MessageCircle className="h-4 w-4 mt-0.5 text-primary" />
-                  <div className="min-w-0">
-                    <p className="text-sm font-medium truncate cursor-pointer">{c.title}</p>
-                    <p className="text-xs text-muted-foreground">{c.time}</p>
-                  </div>
-                </button>
+                <div
+                  key={c._id}
+                  className="flex items-center justify-between rounded-lg px-2 py-2 hover:bg-secondary"
+                >
+
+                  <button
+                    onClick={() =>
+                      loadMessages(c._id)
+                    }
+                    className="flex items-start gap-2 flex-1 text-left"
+                  >
+                    <MessageCircle
+                      className="h-4 w-4 mt-0.5 text-primary"
+                    />
+
+                    <div className="min-w-0">
+                      <p className="text-sm font-medium truncate">
+                        {c.title}
+                      </p>
+                    </div>
+                  </button>
+
+                  <button
+                    onClick={() => {
+
+                      const confirmed =
+                        window.confirm(
+                          "Delete this conversation?"
+                        );
+
+                      if (confirmed) {
+                        deleteConversation(c._id);
+                      }
+
+                    }}
+                    className="p-1 text-red-500 hover:bg-red-100 rounded"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </button>
+
+                </div>
               ))}
             </div>
             <div className="p-3 border-t flex items-center gap-3">

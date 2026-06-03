@@ -1,6 +1,8 @@
 const Conversation =
 require("../models/Conversation");
 
+const Chat = require("../models/Chat");
+
 exports.createConversation =
 async (req, res) => {
 
@@ -62,6 +64,36 @@ async (req, res) => {
       });
 
     res.json(chats);
+
+  } catch (error) {
+
+    res.status(500).json({
+      message: error.message,
+    });
+
+  }
+};
+
+exports.deleteConversation =
+async (req, res) => {
+
+  try {
+
+    const conversationId =
+      req.params.id;
+
+    await Conversation.findByIdAndDelete(
+      conversationId
+    );
+
+    await Chat.deleteMany({
+      conversationId,
+    });
+
+    res.json({
+      message:
+        "Conversation deleted successfully",
+    });
 
   } catch (error) {
 
