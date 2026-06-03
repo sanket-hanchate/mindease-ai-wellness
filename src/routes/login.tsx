@@ -25,10 +25,27 @@ function LoginPage() {
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (!email || !password) { toast.error("Please enter your email and password."); return; }
-    setLoading(true);
-    await login(email, password);
-    toast.success("Welcome back!");
-    navigate({ to: "/dashboard" });
+    try {
+
+      setLoading(true);
+
+      await login(email, password);
+
+      toast.success("Welcome back!");
+
+      navigate({ to: "/dashboard" });
+
+    }
+    catch (err: any) {
+
+      toast.error(err.message);
+
+    }
+    finally {
+
+      setLoading(false);
+
+    }
   };
 
   return (
@@ -68,6 +85,7 @@ function LoginPage() {
                 </button>
               </div>
             </div>
+
             <div className="flex items-center justify-between text-sm">
               <label className="flex items-center gap-2 text-muted-foreground"><Checkbox /> Remember me</label>
               <a href="#" className="text-primary hover:underline">Forgot password?</a>

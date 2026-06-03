@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Layout } from "@/components/Layout";
+import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { useAuth } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,7 +12,11 @@ import { toast } from "sonner";
 
 export const Route = createFileRoute("/profile")({
   head: () => ({ meta: [{ title: "Profile — MindEase" }] }),
-  component: ProfilePage,
+  component: () => (
+    <ProtectedRoute>
+      <ProfilePage />
+    </ProtectedRoute>
+  ),
 });
 
 function ProfilePage() {

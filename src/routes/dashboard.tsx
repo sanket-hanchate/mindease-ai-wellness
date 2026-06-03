@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Layout } from "@/components/Layout";
+import { ProtectedRoute } from "@/components/ProtectedRoute";
 import {
   AreaChart, Area, ResponsiveContainer, XAxis, YAxis, Tooltip, CartesianGrid,
   BarChart, Bar, RadialBarChart, RadialBar, PolarAngleAxis, LineChart, Line, PieChart, Pie, Cell, Legend,
@@ -9,7 +10,11 @@ import { useAuth } from "@/lib/auth";
 
 export const Route = createFileRoute("/dashboard")({
   head: () => ({ meta: [{ title: "Dashboard — MindEase" }] }),
-  component: Dashboard,
+  component: () => (
+    <ProtectedRoute>
+      <Dashboard />
+    </ProtectedRoute>
+  ),
 });
 
 const moodTrend = [

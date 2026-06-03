@@ -42,7 +42,7 @@ function RegisterPage() {
       password: form.password,
     });
     toast.success("Account created!");
-    navigate({ to: "/dashboard" });
+    navigate({ to: "/login" });
   };
 
   return (

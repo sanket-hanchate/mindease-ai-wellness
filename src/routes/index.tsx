@@ -63,7 +63,7 @@ function Index() {
             </span>
             <h1 className="mt-5 text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-balance">
               Personalized Support for{" "}
-              <span className="bg-gradient-primary bg-clip-text text-transparent">Anxiety</span> and Emotional Well-Being
+              <span className="bg-gradient-primary bg-clip-text text-transparent">Mental</span> and Emotional Well-Being
             </h1>
             <p className="mt-5 text-lg text-muted-foreground max-w-2xl text-balance">
               Accessible, evidence-based mental wellness support powered by AI — built for the moments

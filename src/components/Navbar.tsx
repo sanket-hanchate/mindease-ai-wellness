@@ -5,14 +5,18 @@ import { Logo } from "./Logo";
 import { useAuth } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
 
-const nav = [
+const publicNav = [
   { to: "/", label: "Home" },
   { to: "/about", label: "About" },
   { to: "/disorders", label: "Disorders" },
-  { to: "/dashboard", label: "Dashboard" },
-  { to: "/cognitive", label: "Cognitive Wellness" },
   { to: "/resources", label: "Resources" },
   { to: "/faq", label: "FAQ" },
+] as const;
+
+const protectedNav = [
+  { to: "/dashboard", label: "Dashboard" },
+  { to: "/chat", label: "Chatbot" },
+  { to: "/cognitive", label: "Cognitive Wellness" },
 ] as const;
 
 export function Navbar() {
@@ -20,6 +24,7 @@ export function Navbar() {
   const path = useRouterState({ select: (s) => s.location.pathname });
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const nav = user ? [...publicNav, ...protectedNav] : publicNav;
 
   return (
     <header className="sticky top-0 z-50 glass border-b border-border/60">
@@ -52,7 +57,7 @@ export function Navbar() {
                 </span>
                 <span className="font-medium">{user.fullName.split(" ")[0]}</span>
               </Link>
-              <Button variant="ghost" size="sm" onClick={() => { logout(); navigate({ to: "/" }); }}>
+              <Button variant="ghost" size="sm" onClick={() => { logout(); navigate({ to: "/login" }); }}>
                 <LogOut className="h-4 w-4" />
               </Button>
             </>
@@ -83,7 +88,7 @@ export function Navbar() {
                   <Link to="/profile" onClick={() => setOpen(false)} className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-secondary">
                     <UserIcon className="h-4 w-4" /> Profile
                   </Link>
-                  <button onClick={() => { logout(); setOpen(false); navigate({ to: "/" }); }} className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-secondary text-left">
+                  <button onClick={() => { logout(); setOpen(false); navigate({ to: "/login" }); }} className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-secondary text-left">
                     <LogOut className="h-4 w-4" /> Logout
                   </button>
                 </>

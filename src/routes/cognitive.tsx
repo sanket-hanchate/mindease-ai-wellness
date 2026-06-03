@@ -1,12 +1,17 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Layout } from "@/components/Layout";
+import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Brain, Zap, Shuffle, Timer, Heart, Award, Play, Trophy, TrendingUp } from "lucide-react";
 
 export const Route = createFileRoute("/cognitive")({
   head: () => ({ meta: [{ title: "Cognitive Wellness — MindEase" }] }),
-  component: CognitivePage,
+  component: () => (
+    <ProtectedRoute>
+      <CognitivePage />
+    </ProtectedRoute>
+  ),
 });
 
 const games = [
