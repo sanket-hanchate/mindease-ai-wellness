@@ -70,29 +70,38 @@ function Index() {
               traditional care can't reach.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
+
               <Link to="/chat">
-                <Button size="lg" className="bg-gradient-primary text-white shadow-glow hover:opacity-95">
-                  Start Chat <ArrowRight className="ml-1 h-4 w-4" />
+                <Button
+                  size="lg"
+                  className="bg-gradient-primary text-white shadow-glow hover:opacity-95"
+                >
+                  Start Chat
+                  <ArrowRight className="ml-1 h-4 w-4" />
                 </Button>
               </Link>
-              <Link to="/about">
-                <Button size="lg" variant="outline">Learn More</Button>
+
+              <Link to="/video-chat">
+                <Button
+                  size="lg"
+                  className="bg-gradient-primary text-white shadow-glow hover:opacity-95"
+                >
+                  Video Chat With Lara
+                  <ArrowRight className="ml-1 h-4 w-4" />
+                </Button>
               </Link>
+
+              <Link to="/about">
+                <Button
+                  size="lg"
+                  variant="outline"
+                >
+                  Learn More
+                </Button>
+              </Link>
+
             </div>
-            <div className="mt-8 flex items-center gap-6 text-sm text-muted-foreground">
-              <div className="flex items-center gap-1.5">
-                <div className="flex -space-x-2">
-                  {[1,2,3,4].map((i) => (
-                    <div key={i} className="h-7 w-7 rounded-full ring-2 ring-background bg-gradient-to-br from-primary to-teal" />
-                  ))}
-                </div>
-                <span>12,400+ users supported</span>
-              </div>
-              <div className="hidden sm:flex items-center gap-1">
-                {[1,2,3,4,5].map((i) => <Star key={i} className="h-4 w-4 fill-warning text-warning" />)}
-                <span className="ml-1">4.9 average rating</span>
-              </div>
-            </div>
+            
           </motion.div>
         </div>
       </section>
@@ -179,7 +188,7 @@ function Index() {
             {testimonials.map((t) => (
               <div key={t.name} className="rounded-2xl bg-card border border-border p-6 shadow-soft">
                 <div className="flex gap-1 mb-3">
-                  {[1,2,3,4,5].map((i) => <Star key={i} className="h-4 w-4 fill-warning text-warning" />)}
+                  {[1, 2, 3, 4, 5].map((i) => <Star key={i} className="h-4 w-4 fill-warning text-warning" />)}
                 </div>
                 <p className="text-sm leading-relaxed text-foreground/90">"{t.text}"</p>
                 <div className="mt-4 flex items-center gap-3">
