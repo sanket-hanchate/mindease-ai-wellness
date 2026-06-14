@@ -2,6 +2,8 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Heart, Brain, Activity, MapPin, Users2, ArrowRight } from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
+import { translations } from "@/lib/translations";
 
 export const Route = createFileRoute("/disorders")({
   head: () => ({
@@ -13,32 +15,35 @@ export const Route = createFileRoute("/disorders")({
   component: Disorders,
 });
 
-const list = [
-  { name: "Generalized Anxiety Disorder", icon: Activity, color: "from-blue-400 to-blue-600",
-    overview: "Persistent and excessive worry about everyday issues — work, health, family — even when there is little or no reason to worry.",
-    symptoms: ["Restlessness and feeling on edge","Difficulty concentrating","Muscle tension","Sleep disturbance","Irritability"] },
-  { name: "Social Anxiety Disorder", icon: Users2, color: "from-teal-400 to-teal-600",
-    overview: "Intense fear of being judged, embarrassed or watched in social or performance situations, often leading to avoidance.",
-    symptoms: ["Fear of social judgment","Blushing or sweating in groups","Avoidance of public speaking","Self-consciousness","Anticipatory anxiety"] },
-  { name: "Panic Disorder", icon: Heart, color: "from-purple-400 to-purple-600",
-    overview: "Recurrent, unexpected panic attacks involving sudden waves of intense fear paired with strong physical symptoms.",
-    symptoms: ["Racing heart, chest tightness","Shortness of breath","Dizziness or trembling","Fear of losing control","Fear of future attacks"] },
-  { name: "Specific Phobia", icon: Brain, color: "from-cyan-400 to-cyan-600",
-    overview: "Marked fear of a specific object or situation (heights, flying, animals) that's out of proportion to actual danger.",
-    symptoms: ["Immediate anxiety on exposure","Active avoidance","Physical reactions like nausea","Awareness fear is excessive","Distress disrupts daily life"] },
-  { name: "Agoraphobia", icon: MapPin, color: "from-indigo-400 to-indigo-600",
-    overview: "Anxiety about being in places or situations from which escape might be difficult or help unavailable in case of a panic-like episode.",
-    symptoms: ["Fear of crowds or open spaces","Avoidance of public transit","Reliance on a safe companion","Housebound tendencies","Anticipatory dread"] },
-];
-
 function Disorders() {
+  const { language } = useLanguage();
+  const t = translations[language];
+
+  const list = [
+    { name: t.disorder1NameLong, icon: Activity, color: "from-blue-400 to-blue-600",
+      overview: t.disorder1Overview,
+      symptoms: [t.disorder1Symptom1, t.disorder1Symptom2, t.disorder1Symptom3, t.disorder1Symptom4, t.disorder1Symptom5] },
+    { name: t.disorder2NameLong, icon: Users2, color: "from-teal-400 to-teal-600",
+      overview: t.disorder2Overview,
+      symptoms: [t.disorder2Symptom1, t.disorder2Symptom2, t.disorder2Symptom3, t.disorder2Symptom4, t.disorder2Symptom5] },
+    { name: t.disorder3NameLong, icon: Heart, color: "from-purple-400 to-purple-600",
+      overview: t.disorder3Overview,
+      symptoms: [t.disorder3Symptom1, t.disorder3Symptom2, t.disorder3Symptom3, t.disorder3Symptom4, t.disorder3Symptom5] },
+    { name: t.disorder4NameLong, icon: Brain, color: "from-cyan-400 to-cyan-600",
+      overview: t.disorder4Overview,
+      symptoms: [t.disorder4Symptom1, t.disorder4Symptom2, t.disorder4Symptom3, t.disorder4Symptom4, t.disorder4Symptom5] },
+    { name: t.disorder5NameLong, icon: MapPin, color: "from-indigo-400 to-indigo-600",
+      overview: t.disorder5Overview,
+      symptoms: [t.disorder5Symptom1, t.disorder5Symptom2, t.disorder5Symptom3, t.disorder5Symptom4, t.disorder5Symptom5] },
+  ];
+
   return (
     <Layout>
       <section className="bg-gradient-hero py-16">
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-          <h1 className="text-4xl sm:text-5xl font-bold tracking-tight">Understanding anxiety disorders</h1>
+          <h1 className="text-4xl sm:text-5xl font-bold tracking-tight">{t.disordersTitleLong}</h1>
           <p className="mt-4 text-muted-foreground text-lg max-w-2xl">
-            Knowledge is the first step toward relief. Explore the conditions MindEase is built to support.
+            {t.disordersDescLong}
           </p>
         </div>
       </section>
@@ -54,7 +59,7 @@ function Disorders() {
                 <h2 className="text-xl font-bold">{d.name}</h2>
                 <p className="text-sm text-muted-foreground mt-2">{d.overview}</p>
                 <div className="mt-4">
-                  <h3 className="text-xs uppercase tracking-wide font-semibold text-foreground/70">Common Symptoms</h3>
+                  <h3 className="text-xs uppercase tracking-wide font-semibold text-foreground/70">{t.commonSymptoms}</h3>
                   <ul className="mt-2 space-y-1">
                     {d.symptoms.map((s) => (
                       <li key={s} className="flex items-start gap-2 text-sm">
@@ -65,7 +70,7 @@ function Disorders() {
                   </ul>
                 </div>
                 <Button variant="outline" className="mt-6 self-start">
-                  Learn More <ArrowRight className="ml-1 h-4 w-4" />
+                  {t.learnMoreBtn} <ArrowRight className="ml-1 h-4 w-4" />
                 </Button>
               </div>
             </article>

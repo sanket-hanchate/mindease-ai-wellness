@@ -68,18 +68,17 @@ function About() {
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 grid gap-10 md:grid-cols-2 items-center">
           <div>
             <div className="grid h-11 w-11 place-items-center rounded-xl bg-destructive/10 text-destructive"><AlertTriangle className="h-5 w-5" /></div>
-            <h2 className="mt-4 text-3xl font-bold tracking-tight">The problem</h2>
+            <h2 className="mt-4 text-3xl font-bold tracking-tight">{t.problemTitle}</h2>
             <p className="mt-3 text-muted-foreground">
-              1 in 4 adults experience anxiety each year, yet over 60% never receive care. Waitlists are long, costs are high,
-              and stigma is real. The result: silent suffering and preventable crises.
+              {t.problemDesc}
             </p>
           </div>
           <div className="grid grid-cols-2 gap-4">
             {[
-              { stat: "264M", label: "people live with anxiety" },
-              { stat: "60%", label: "never seek treatment" },
-              { stat: "8 wks", label: "avg therapist waitlist" },
-              { stat: "$200+", label: "per session out of pocket" },
+              { stat: t.problemStat1Val, label: t.problemStat1Label },
+              { stat: t.problemStat2Val, label: t.problemStat2Label },
+              { stat: t.problemStat3Val, label: t.problemStat3Label },
+              { stat: t.problemStat4Val, label: t.problemStat4Label },
             ].map((s) => (
               <div key={s.label} className="rounded-2xl border bg-card p-5">
                 <p className="text-3xl font-bold text-primary">{s.stat}</p>
@@ -93,12 +92,12 @@ function About() {
       <section className="py-16">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <div className="grid h-11 w-11 place-items-center rounded-xl bg-gradient-primary text-white"><HeartHandshake className="h-5 w-5" /></div>
-          <h2 className="mt-4 text-3xl font-bold tracking-tight">Why MindEase</h2>
+          <h2 className="mt-4 text-3xl font-bold tracking-tight">{t.whyTitle}</h2>
           <div className="mt-8 grid gap-5 md:grid-cols-3">
             {[
-              { title: "Always available", text: "Support at 3am or 3pm — no appointment, no waiting room." },
-              { title: "Clinically informed", text: "Built with input from licensed therapists and grounded in CBT principles." },
-              { title: "Truly private", text: "Your conversations are encrypted and never sold. You stay in control." },
+              { title: t.whyItem1Title, text: t.whyItem1Text },
+              { title: t.whyItem2Title, text: t.whyItem2Text },
+              { title: t.whyItem3Title, text: t.whyItem3Text },
             ].map((c) => (
               <div key={c.title} className="rounded-2xl border bg-card p-6">
                 <h3 className="font-semibold">{c.title}</h3>
@@ -111,7 +110,7 @@ function About() {
 
       <section className="py-16">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold tracking-tight">Meet the team</h2>
+          <h2 className="text-3xl font-bold tracking-tight">{t.teamTitle}</h2>
           <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {team.map((m) => (
               <div key={m.name} className="rounded-2xl border bg-card p-6 text-center">

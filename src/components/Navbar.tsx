@@ -9,18 +9,20 @@ import {
   type LanguageType,
 } from "@/context/LanguageContext";
 
+import { translations } from "@/lib/translations";
+
 const publicNav = [
-  { to: "/", label: "Home" },
-  { to: "/about", label: "About" },
-  { to: "/disorders", label: "Disorders" },
-  { to: "/resources", label: "Resources" },
-  { to: "/faq", label: "FAQ" },
+  { to: "/" },
+  { to: "/about" },
+  { to: "/disorders" },
+  { to: "/resources" },
+  { to: "/faq" },
 ] as const;
 
 const protectedNav = [
-  { to: "/dashboard", label: "Dashboard" },
-  { to: "/chat", label: "Chatbot" },
-  { to: "/cognitive", label: "Cognitive Wellness" },
+  { to: "/dashboard" },
+  { to: "/chat" },
+  { to: "/cognitive" },
 ] as const;
 
 export function Navbar() {
@@ -31,6 +33,21 @@ export function Navbar() {
   const nav = user ? [...publicNav, ...protectedNav] : publicNav;
 
   const { language, setLanguage } = useLanguage();
+  const t = translations[language];
+
+  const getNavLinkLabel = (to: string) => {
+    switch (to) {
+      case "/": return t.navHome;
+      case "/about": return t.navAbout;
+      case "/disorders": return t.navDisorders;
+      case "/resources": return t.navResources;
+      case "/faq": return t.navFAQ;
+      case "/dashboard": return t.navDashboard;
+      case "/chat": return t.navChatbot;
+      case "/cognitive": return t.navCognitiveWellness;
+      default: return "";
+    }
+  };
 
   return (
     <header className="sticky top-0 z-50 glass border-b border-border/60">
@@ -47,7 +64,7 @@ export function Navbar() {
                 className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${active ? "text-primary bg-primary/10" : "text-foreground/70 hover:text-foreground hover:bg-secondary"
                   }`}
               >
-                {n.label}
+                {getNavLinkLabel(n.to)}
               </Link>
             );
           })}
@@ -61,13 +78,13 @@ export function Navbar() {
                 e.target.value as LanguageType
               )
             }
-            className="border rounded-md px-3 py-2 text-sm bg-white"
+            className="border rounded-md px-3 py-2 text-sm bg-white text-black font-medium"
           >
-            <option value="en">English</option>
-            <option value="hi">हिन्दी</option>
-            <option value="mr">मराठी</option>
-            <option value="ta">தமிழ்</option>
-            <option value="te">తెలుగు</option>
+            <option value="en">Language/English</option>
+            <option value="hi">Language/हिन्दी</option>
+            <option value="mr">Language/मराठी</option>
+            <option value="ta">Language/தமிழ்</option>
+            <option value="te">Language/తెలుగు</option>
           </select>
 
           {user ? (
@@ -84,8 +101,8 @@ export function Navbar() {
             </>
           ) : (
             <>
-              <Link to="/login"><Button variant="ghost" size="sm">Login</Button></Link>
-              <Link to="/register"><Button size="sm" className="bg-gradient-primary text-white shadow-soft hover:opacity-95">Get Started</Button></Link>
+              <Link to="/login"><Button variant="ghost" size="sm">{t.navLogin}</Button></Link>
+              <Link to="/register"><Button size="sm" className="bg-gradient-primary text-white shadow-soft hover:opacity-95">{t.navGetStarted}</Button></Link>
             </>
           )}
         </div>
@@ -100,23 +117,23 @@ export function Navbar() {
           <div className="px-4 py-3 space-y-1">
             {nav.map((n) => (
               <Link key={n.to} to={n.to} onClick={() => setOpen(false)} className="block px-3 py-2 rounded-md text-sm font-medium hover:bg-secondary">
-                {n.label}
+                {getNavLinkLabel(n.to)}
               </Link>
             ))}
             <div className="border-t border-border pt-3 mt-3 flex flex-col gap-2">
               {user ? (
                 <>
                   <Link to="/profile" onClick={() => setOpen(false)} className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-secondary">
-                    <UserIcon className="h-4 w-4" /> Profile
+                    <UserIcon className="h-4 w-4" /> {t.navProfile}
                   </Link>
-                  <button onClick={() => { logout(); setOpen(false); navigate({ to: "/login" }); }} className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-secondary text-left">
-                    <LogOut className="h-4 w-4" /> Logout
+                  <button onClick={() => { logout(); setOpen(false); navigate({ to: "/login" }); }} className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-secondary text-left w-full">
+                    <LogOut className="h-4 w-4" /> {t.navLogout}
                   </button>
                 </>
               ) : (
                 <>
-                  <Link to="/login" onClick={() => setOpen(false)}><Button variant="outline" className="w-full">Login</Button></Link>
-                  <Link to="/register" onClick={() => setOpen(false)}><Button className="w-full bg-gradient-primary text-white">Get Started</Button></Link>
+                  <Link to="/login" onClick={() => setOpen(false)}><Button variant="outline" className="w-full">{t.navLogin}</Button></Link>
+                  <Link to="/register" onClick={() => setOpen(false)}><Button className="w-full bg-gradient-primary text-white">{t.navGetStarted}</Button></Link>
                 </>
               )}
             </div>

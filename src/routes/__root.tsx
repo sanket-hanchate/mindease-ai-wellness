@@ -15,21 +15,33 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { AuthProvider } from "../lib/auth";
 import { Toaster } from "@/components/ui/sonner";
 
+import { useLanguage } from "@/context/LanguageContext";
+import { translations } from "@/lib/translations";
+
 function NotFoundComponent() {
+  let language: "en" | "hi" | "mr" | "ta" | "te" = "en";
+  try {
+    const context = useLanguage();
+    if (context) language = context.language;
+  } catch (e) {
+    // Fallback to English if Context is not available
+  }
+  const t = translations[language];
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
-        <h1 className="text-7xl font-bold text-foreground">404</h1>
-        <h2 className="mt-4 text-xl font-semibold text-foreground">Page not found</h2>
+        <h1 className="text-7xl font-bold text-foreground">{t.error404Title}</h1>
+        <h2 className="mt-4 text-xl font-semibold text-foreground">{t.error404Subtitle}</h2>
         <p className="mt-2 text-sm text-muted-foreground">
-          The page you're looking for doesn't exist or has been moved.
+          {t.error404Desc}
         </p>
         <div className="mt-6">
           <Link
             to="/"
             className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
           >
-            Go home
+            {t.btnGoHome}
           </Link>
         </div>
       </div>
@@ -44,14 +56,23 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
     reportLovableError(error, { boundary: "tanstack_root_error_component" });
   }, [error]);
 
+  let language: "en" | "hi" | "mr" | "ta" | "te" = "en";
+  try {
+    const context = useLanguage();
+    if (context) language = context.language;
+  } catch (e) {
+    // Fallback to English if Context is not available
+  }
+  const t = translations[language];
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
         <h1 className="text-xl font-semibold tracking-tight text-foreground">
-          This page didn't load
+          {t.errorLoadTitle}
         </h1>
         <p className="mt-2 text-sm text-muted-foreground">
-          Something went wrong on our end. You can try refreshing or head back home.
+          {t.errorLoadDesc}
         </p>
         <div className="mt-6 flex flex-wrap justify-center gap-2">
           <button
@@ -61,13 +82,13 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
             }}
             className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
           >
-            Try again
+            {t.btnTryAgain}
           </button>
           <a
             href="/"
             className="inline-flex items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
           >
-            Go home
+            {t.btnGoHome}
           </a>
         </div>
       </div>

@@ -22,42 +22,39 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-const stats = [
-  { value: "5", label: "Anxiety Disorders Covered", icon: Heart },
-  { value: "24/7", label: "AI Support Available", icon: Clock },
-  { value: "100%", label: "Personalized Guidance", icon: Sparkles },
-  { value: "E2E", label: "Secure & Private", icon: Lock },
-];
-
-const features = [
-  { icon: MessageCircle, title: "AI Guided Support", desc: "Have a real conversation with an empathetic AI trained in evidence-based techniques." },
-  { icon: Activity, title: "Mood Tracking", desc: "Log how you feel and surface patterns over weeks and months — automatically." },
-  { icon: Brain, title: "Cognitive Wellness", desc: "Sharpen focus, memory and emotional regulation with science-inspired exercises." },
-  { icon: BookHeart, title: "Emotional Journaling", desc: "Guided prompts that turn racing thoughts into clarity and self-understanding." },
-  { icon: LineChart, title: "Progress Analytics", desc: "See your wellness score and weekly progress visualized beautifully." },
-  { icon: Shield, title: "Private by Design", desc: "Your data stays yours. No selling, no profiling, no judgment — ever." },
-];
-
-const disorders = [
-  { name: "Generalized Anxiety", color: "from-blue-400 to-blue-600", desc: "Persistent, excessive worry across daily life." },
-  { name: "Social Anxiety", color: "from-teal-400 to-teal-600", desc: "Intense fear in social or performance settings." },
-  { name: "Panic Disorder", color: "from-purple-400 to-purple-600", desc: "Recurrent panic attacks with physical symptoms." },
-  { name: "Specific Phobia", color: "from-cyan-400 to-cyan-600", desc: "Marked fear of specific objects or situations." },
-  { name: "Agoraphobia", color: "from-indigo-400 to-indigo-600", desc: "Anxiety about places that feel hard to escape." },
-];
-
-const testimonials = [
-  { name: "Sara M.", role: "Graduate Student", text: "MindEase helps me untangle my pre-exam spiral. It feels like a calm friend at 2am." },
-  { name: "Dev R.", role: "Product Manager", text: "The mood patterns alone were eye-opening. I caught a burnout cycle before it hit." },
-  { name: "Aisha K.", role: "Designer", text: "Cognitive exercises are genuinely fun. My focus and sleep both improved in weeks." },
-];
-
 function Index() {
-  const { language } =
-  useLanguage();
+  const { language } = useLanguage();
+  const t = translations[language];
 
-const t =
-  translations[language];
+  const stats = [
+    { value: t.statAnxietyVal, label: t.statAnxietyLabel, icon: Heart },
+    { value: t.statSupportVal, label: t.statSupportLabel, icon: Clock },
+    { value: t.statGuidanceVal, label: t.statGuidanceLabel, icon: Sparkles },
+    { value: t.statSecureVal, label: t.statSecureLabel, icon: Lock },
+  ];
+
+  const features = [
+    { icon: MessageCircle, title: t.feature1Title, desc: t.feature1Desc },
+    { icon: Activity, title: t.feature2Title, desc: t.feature2Desc },
+    { icon: Brain, title: t.feature3Title, desc: t.feature3Desc },
+    { icon: BookHeart, title: t.feature4Title, desc: t.feature4Desc },
+    { icon: LineChart, title: t.feature5Title, desc: t.feature5Desc },
+    { icon: Shield, title: t.feature6Title, desc: t.feature6Desc },
+  ];
+
+  const disorders = [
+    { name: t.disorder1Name, color: "from-blue-400 to-blue-600", desc: t.disorder1Desc },
+    { name: t.disorder2Name, color: "from-teal-400 to-teal-600", desc: t.disorder2Desc },
+    { name: t.disorder3Name, color: "from-purple-400 to-purple-600", desc: t.disorder3Desc },
+    { name: t.disorder4Name, color: "from-cyan-400 to-cyan-600", desc: t.disorder4Desc },
+    { name: t.disorder5Name, color: "from-indigo-400 to-indigo-600", desc: t.disorder5Desc },
+  ];
+
+  const steps = [
+    { step: t.step1Number, title: t.step1Title, desc: t.step1Desc },
+    { step: t.step2Number, title: t.step2Title, desc: t.step2Desc },
+    { step: t.step3Number, title: t.step3Title, desc: t.step3Desc },
+  ];
 
   return (
     <Layout>
@@ -70,17 +67,16 @@ const t =
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20 lg:py-28">
           <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="max-w-3xl">
             <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card/70 px-3 py-1 text-xs font-medium text-foreground/80 backdrop-blur">
-              <Sparkles className="h-3.5 w-3.5 text-primary" /> Powered by clinical research + modern AI
+              <Sparkles className="h-3.5 w-3.5 text-primary" /> {t.heroBadge}
             </span>
             <h1 className="mt-5 text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-balance">
-              {t.heroTitle}
-              <span className="bg-gradient-primary bg-clip-text text-transparent">Mental</span> and Emotional Well-Being
+              {t.heroTitlePart1}
+              <span className="bg-gradient-primary bg-clip-text text-transparent">{t.heroTitlePart2}</span>{t.heroTitlePart3}
             </h1>
             <p className="mt-5 text-lg text-muted-foreground max-w-2xl text-balance">
-             {t.heroDesc}
+              {t.heroDesc}
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
-
               <Link to="/chat">
                 <Button
                   size="lg"
@@ -106,12 +102,10 @@ const t =
                   size="lg"
                   variant="outline"
                 >
-                  Learn More
+                  {t.btnLearnMore}
                 </Button>
               </Link>
-
             </div>
-            
           </motion.div>
         </div>
       </section>
@@ -131,8 +125,8 @@ const t =
       <section className="py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="max-w-2xl">
-            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">Everything you need to feel a little better, every day.</h2>
-            <p className="mt-3 text-muted-foreground">Tools designed with clinicians and built for real life.</p>
+            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">{t.featuresTitle}</h2>
+            <p className="mt-3 text-muted-foreground">{t.featuresSubtitle}</p>
           </div>
           <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {features.map((f, i) => (
@@ -152,10 +146,10 @@ const t =
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex items-end justify-between flex-wrap gap-4">
             <div>
-              <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">Conditions we support</h2>
-              <p className="mt-3 text-muted-foreground max-w-xl">Specialized guidance across the most common anxiety spectrum conditions.</p>
+              <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">{t.disordersTitle}</h2>
+              <p className="mt-3 text-muted-foreground max-w-xl">{t.disordersSubtitle}</p>
             </div>
-            <Link to="/disorders"><Button variant="outline">Explore all <ArrowRight className="ml-1 h-4 w-4" /></Button></Link>
+            <Link to="/disorders"><Button variant="outline">{t.exploreAll} <ArrowRight className="ml-1 h-4 w-4" /></Button></Link>
           </div>
           <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-5">
             {disorders.map((d) => (
@@ -173,14 +167,10 @@ const t =
 
       <section className="py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-center">How MindEase works</h2>
-          <p className="mt-3 text-muted-foreground text-center max-w-xl mx-auto">Three simple steps to a calmer, clearer mind.</p>
+          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-center">{t.howItWorksTitle}</h2>
+          <p className="mt-3 text-muted-foreground text-center max-w-xl mx-auto">{t.howItWorksSubtitle}</p>
           <div className="mt-12 grid gap-6 md:grid-cols-3">
-            {[
-              { step: "01", title: "Tell us how you feel", desc: "A quick check-in helps personalize your support, mood tracking and exercises." },
-              { step: "02", title: "Chat anytime", desc: "Talk with our empathetic AI companion whenever anxiety, stress or sleep bothers you." },
-              { step: "03", title: "Track real progress", desc: "Beautiful analytics show patterns and improvements in your wellness over time." },
-            ].map((s) => (
+            {steps.map((s) => (
               <div key={s.step} className="rounded-2xl border border-border bg-card p-6 relative overflow-hidden">
                 <span className="absolute -top-4 -right-2 text-7xl font-bold text-primary/10">{s.step}</span>
                 <h3 className="font-semibold text-lg">{s.title}</h3>
@@ -197,11 +187,11 @@ const t =
             <div className="absolute inset-0 opacity-20" style={{ backgroundImage: "radial-gradient(circle at 20% 20%, white 0%, transparent 40%), radial-gradient(circle at 80% 80%, white 0%, transparent 40%)" }} />
             <div className="relative">
               <Users className="h-8 w-8 mb-3" />
-              <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">Your calmer mind starts today.</h2>
-              <p className="mt-3 max-w-xl text-white/90">Join thousands building healthier mental habits with MindEase. Free to start, no credit card needed.</p>
+              <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">{t.ctaTitle}</h2>
+              <p className="mt-3 max-w-xl text-white/90">{t.ctaDesc}</p>
               <div className="mt-6 flex flex-wrap gap-3">
-                <Link to="/register"><Button size="lg" className="bg-white text-primary hover:bg-white/90">Create free account</Button></Link>
-                <Link to="/chat"><Button size="lg" variant="outline" className="bg-white text-primary hover:bg-white/90">Try the chat</Button></Link>
+                <Link to="/register"><Button size="lg" className="bg-white text-primary hover:bg-white/90">{t.ctaButtonRegister}</Button></Link>
+                <Link to="/chat"><Button size="lg" variant="outline" className="bg-white text-primary hover:bg-white/90">{t.ctaButtonChat}</Button></Link>
               </div>
             </div>
           </div>

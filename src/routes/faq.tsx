@@ -5,25 +5,31 @@ import { Input } from "@/components/ui/input";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Search, HelpCircle } from "lucide-react";
 
+import { useLanguage } from "@/context/LanguageContext";
+import { translations } from "@/lib/translations";
+
 export const Route = createFileRoute("/faq")({
   head: () => ({ meta: [{ title: "FAQ — MindEase" }] }),
   component: FAQPage,
 });
 
-const faqs = [
-  { q: "What is MindEase?", a: "MindEase is an AI-powered mental wellness platform offering anxiety support, mood tracking, cognitive wellness exercises and educational resources, built with input from licensed clinicians." },
-  { q: "Is my data secure?", a: "Yes. Conversations and journal entries are encrypted in transit and at rest. We never sell your data and you can export or delete it at any time." },
-  { q: "Can AI replace therapists?", a: "No. MindEase is a complementary support tool — great for daily check-ins, exercises and reflection. We always recommend professional care for clinical needs." },
-  { q: "Which anxiety disorders are covered?", a: "We provide educational content and supportive techniques for Generalized Anxiety, Social Anxiety, Panic Disorder, Specific Phobia and Agoraphobia." },
-  { q: "How does the chatbot work?", a: "Our AI is trained with CBT-informed conversational frameworks. It listens, reflects and suggests gentle, evidence-based exercises — never diagnoses." },
-  { q: "Are cognitive exercises scientifically inspired?", a: "Yes. Our exercises are inspired by published cognitive training research and reviewed by clinical advisors, focused on focus, memory and emotional regulation." },
-  { q: "Is the platform free?", a: "MindEase is free to start with core features. We offer an optional premium plan for advanced analytics and unlimited cognitive sessions." },
-  { q: "Can I track my progress?", a: "Absolutely — your dashboard visualizes mood trends, stress patterns, cognitive scores and weekly improvements automatically." },
-];
-
 function FAQPage() {
+  const { language } = useLanguage();
+  const t = translations[language];
+
+  const faqs = [
+    { q: t.faq1Q, a: t.faq1A },
+    { q: t.faq2Q, a: t.faq2A },
+    { q: t.faq3Q, a: t.faq3A },
+    { q: t.faq4Q, a: t.faq4A },
+    { q: t.faq5Q, a: t.faq5A },
+    { q: t.faq6Q, a: t.faq6A },
+    { q: t.faq7Q, a: t.faq7A },
+    { q: t.faq8Q, a: t.faq8A },
+  ];
+
   const [q, setQ] = useState("");
-  const filtered = useMemo(() => faqs.filter((f) => `${f.q} ${f.a}`.toLowerCase().includes(q.toLowerCase())), [q]);
+  const filtered = useMemo(() => faqs.filter((f) => `${f.q} ${f.a}`.toLowerCase().includes(q.toLowerCase())), [q, faqs]);
 
   return (
     <Layout>
@@ -32,11 +38,11 @@ function FAQPage() {
           <div className="inline-grid h-12 w-12 place-items-center rounded-2xl bg-card shadow-soft text-primary mb-3">
             <HelpCircle className="h-6 w-6" />
           </div>
-          <h1 className="text-4xl sm:text-5xl font-bold tracking-tight">Frequently asked questions</h1>
-          <p className="mt-3 text-muted-foreground text-lg">Everything you wanted to know about MindEase.</p>
+          <h1 className="text-4xl sm:text-5xl font-bold tracking-tight">{t.faqTitle}</h1>
+          <p className="mt-3 text-muted-foreground text-lg">{t.faqSubtitle}</p>
           <div className="mt-6 relative max-w-md mx-auto">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search questions..." className="pl-9 h-11 bg-card" />
+            <Input value={q} onChange={(e) => setQ(e.target.value)} placeholder={t.faqSearchPlaceholder} className="pl-9 h-11 bg-card" />
           </div>
         </div>
       </section>
@@ -51,7 +57,7 @@ function FAQPage() {
               </AccordionItem>
             ))}
           </Accordion>
-          {filtered.length === 0 && <p className="text-center text-muted-foreground py-16">No questions match your search.</p>}
+          {filtered.length === 0 && <p className="text-center text-muted-foreground py-16">{t.faqNoResults}</p>}
         </div>
       </section>
     </Layout>

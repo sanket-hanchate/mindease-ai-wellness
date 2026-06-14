@@ -1,6 +1,11 @@
-import { createContext, useContext, useState } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect
+} from "react";
 
-export type LanguageType =
+type LanguageType =
   | "en"
   | "hi"
   | "mr"
@@ -27,6 +32,28 @@ export const LanguageProvider = ({
 
   const [language, setLanguage] =
     useState<LanguageType>("en");
+
+  useEffect(() => {
+
+    const saved =
+      localStorage.getItem(
+        "language"
+      ) as LanguageType;
+
+    if (saved) {
+      setLanguage(saved);
+    }
+
+  }, []);
+
+  useEffect(() => {
+
+    localStorage.setItem(
+      "language",
+      language
+    );
+
+  }, [language]);
 
   return (
     <LanguageContext.Provider
