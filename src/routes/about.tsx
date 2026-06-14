@@ -1,6 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Layout } from "@/components/Layout";
 import { Target, Eye, AlertTriangle, HeartHandshake, Sparkles } from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
+import { translations } from "@/lib/translations";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -20,23 +22,29 @@ const roadmap = [
 ];
 
 const team = [
-  { name: "Dr. Maya Chen", role: "Co-Founder & Clinical Lead", initials: "MC" },
-  { name: "Arjun Patel", role: "Co-Founder & CEO", initials: "AP" },
-  { name: "Sofia Reyes", role: "Head of AI", initials: "SR" },
-  { name: "Liam Carter", role: "Head of Product", initials: "LC" },
+  { name: "Digvijay Kadam", role: "Co-Founder", initials: "DK" },
+  { name: "M D Tassaduk", role: "Co-Founder & CEO", initials: "MD" },
+  { name: "Tejas Mamdyal", role: "Head of AI", initials: "TM" },
+  { name: "Sanket Hanchate", role: "Head of Product", initials: "SH" },
 ];
 
 function About() {
+  const { language } =
+    useLanguage();
+
+  const t =
+    translations[language];
+
   return (
     <Layout>
       <section className="bg-gradient-hero py-20">
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 text-center">
           <span className="inline-flex items-center gap-2 rounded-full border bg-card/70 px-3 py-1 text-xs font-medium backdrop-blur">
-            <Sparkles className="h-3.5 w-3.5 text-primary" /> About MindEase
+            <Sparkles className="h-3.5 w-3.5 text-primary" /> {t.aboutBadge}
           </span>
-          <h1 className="mt-5 text-4xl sm:text-5xl font-bold tracking-tight">Mental wellness, made accessible.</h1>
+          <h1 className="mt-5 text-4xl sm:text-5xl font-bold tracking-tight">{t.aboutTitle}</h1>
           <p className="mt-4 text-muted-foreground text-lg max-w-2xl mx-auto">
-            We believe everyone deserves an empathetic, evidence-based companion for the days that feel heavy — and the days that don't.
+            {t.aboutDesc}
           </p>
         </div>
       </section>
@@ -44,8 +52,8 @@ function About() {
       <section className="py-16">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 grid gap-6 md:grid-cols-2">
           {[
-            { icon: Target, title: "Our Mission", text: "Make personalized, science-backed mental wellness support available to anyone with a phone — at any hour." },
-            { icon: Eye, title: "Our Vision", text: "A world where seeking support for your mind is as simple, normal and effective as caring for your body." },
+            { icon: Target, title: t.missionTitle, text: t.missionText },
+            { icon: Eye, title: t.visionTitle, text: t.visionText },
           ].map((c) => (
             <div key={c.title} className="rounded-2xl border border-border bg-card p-8 shadow-soft">
               <div className="grid h-11 w-11 place-items-center rounded-xl bg-gradient-primary text-white"><c.icon className="h-5 w-5" /></div>
@@ -97,29 +105,6 @@ function About() {
                 <p className="text-sm text-muted-foreground mt-2">{c.text}</p>
               </div>
             ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="py-16 bg-gradient-soft">
-        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold tracking-tight">Roadmap</h2>
-          <div className="mt-8 relative">
-            <div className="absolute left-3 md:left-1/2 top-0 bottom-0 w-px bg-border" />
-            <div className="space-y-8">
-              {roadmap.map((r, i) => (
-                <div key={r.quarter} className={`relative md:grid md:grid-cols-2 md:gap-8 ${i % 2 ? "md:[&>div]:col-start-2" : ""}`}>
-                  <div className="pl-10 md:pl-0 md:pr-8 md:text-right">
-                    <div className="rounded-2xl border bg-card p-5 inline-block text-left">
-                      <p className="text-xs font-mono text-primary">{r.quarter}</p>
-                      <h4 className="font-semibold mt-1">{r.title}</h4>
-                      <p className="text-sm text-muted-foreground mt-1">{r.desc}</p>
-                    </div>
-                  </div>
-                  <span className="absolute left-1.5 md:left-1/2 md:-translate-x-1/2 top-4 h-3 w-3 rounded-full bg-primary ring-4 ring-background" />
-                </div>
-              ))}
-            </div>
           </div>
         </div>
       </section>

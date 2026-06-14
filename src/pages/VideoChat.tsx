@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
 import WebcamFeed from "@/components/WebcamFeed";
+import laraAvatar from "../../assets/lara.png";
+import "../../assets/avatar.css";
+import { useNavigate } from "@tanstack/react-router";
 
 export default function VideoChat() {
+  const navigate = useNavigate();
 
   const [messages, setMessages] = useState<any[]>([]);
   const [conversationId, setConversationId] = useState<string>("");
@@ -16,6 +20,9 @@ export default function VideoChat() {
 
   const [crisisMode, setCrisisMode] =
     useState(false);
+
+
+
 
   const createConversation =
     async () => {
@@ -116,6 +123,67 @@ export default function VideoChat() {
     };
   };
 
+  const speak = (text: string) => {
+
+    setIsSpeaking(true);
+
+    const utterance =
+      new SpeechSynthesisUtterance(text);
+
+    const setVoiceAndSpeak = () => {
+
+      const voices =
+        window.speechSynthesis.getVoices();
+
+      const hindiVoice =
+        voices.find(
+          v =>
+            v.name === "Google हिन्दी"
+        );
+
+      if (hindiVoice) {
+
+        console.log(
+          "Using Voice:",
+          hindiVoice.name
+        );
+
+        utterance.voice =
+          hindiVoice;
+
+        utterance.lang =
+          "hi-IN";
+      }
+
+      utterance.rate = 1.05;
+      utterance.pitch = 1.05;
+      utterance.volume = 1;
+
+      utterance.onend = () => {
+        setIsSpeaking(false);
+      };
+
+      window.speechSynthesis.cancel();
+
+      window.speechSynthesis.speak(
+        utterance
+      );
+    };
+
+    if (
+      window.speechSynthesis
+        .getVoices().length === 0
+    ) {
+
+      window.speechSynthesis.onvoiceschanged =
+        setVoiceAndSpeak;
+
+    } else {
+
+      setVoiceAndSpeak();
+    }
+  };
+
   const sendMessage = async (
     message: string
   ) => {
@@ -172,25 +240,20 @@ export default function VideoChat() {
     speak(data.reply);
   };
 
-  const speak = (
-    text: string
-  ) => {
 
-    setIsSpeaking(true);
+  const endCall = () => {
 
-    const utterance =
-      new SpeechSynthesisUtterance(
-        text
-      );
+    window.speechSynthesis.cancel();
 
-    window.speechSynthesis.speak(
-      utterance
-    );
+    setIsListening(false);
+    setIsSpeaking(false);
+    setIsThinking(false);
 
-    utterance.onend = () => {
-      setIsSpeaking(false);
-    };
+    navigate({
+      to: "/",
+    });
   };
+
 
   return (
     <div
@@ -266,32 +329,58 @@ export default function VideoChat() {
             position: "relative",
           }}
         >
-          <div
+          <img
+            src={laraAvatar}
+            alt="Lara"
+            className={
+              isSpeaking
+                ? "avatar avatar-speaking"
+                : "avatar"
+            }
             style={{
-              width: "180px",
-              height: "180px",
-              borderRadius: "50%",
-              background: "#2d7ff9",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              fontSize: "70px",
+              border: crisisMode
+                ? "5px solid #ff4444"
+                : isListening
+                  ? "5px solid #22c55e"
+                  : isThinking
+                    ? "5px solid #f59e0b"
+                    : isSpeaking
+                      ? "5px solid #8b5cf6"
+                      : "5px solid #3b82f6",
+
+              boxShadow: crisisMode
+                ? "0 0 40px #ff4444"
+                : isListening
+                  ? "0 0 30px #22c55e"
+                  : isThinking
+                    ? "0 0 30px #f59e0b"
+                    : isSpeaking
+                      ? "0 0 35px #8b5cf6"
+                      : "0 0 20px #3b82f6",
+            }}
+          />
+
+          <h2
+            style={{
+              marginTop: "20px",
+              marginBottom: "5px",
             }}
           >
             {
               crisisMode
-                ? "🛟"
-                : "🤖"
-            }
-          </div>
-
-          <h2>
-            {
-              crisisMode
-                ? "Lara - Crisis Support"   
-                : "Lara, Your AI Companion"
+                ? "Lara - Crisis Support"
+                : "Lara"
             }
           </h2>
+
+          <p
+            style={{
+              color: "#ccc",
+              marginBottom: "15px",
+            }}
+          >
+            AI Mental Wellness Companion
+          </p>
 
           {
             crisisMode && (
@@ -326,12 +415,14 @@ export default function VideoChat() {
       <div
         style={{
           marginTop: "20px",
+          display: "flex",
+          gap: "15px",
         }}
       >
         <button
           onClick={startListening}
           style={{
-            width: "100%",
+            flex: 1,
             padding: "18px",
             fontSize: "20px",
             borderRadius: "12px",
@@ -342,6 +433,22 @@ export default function VideoChat() {
           }}
         >
           🎤 Talk To Lara
+        </button>
+
+        <button
+          onClick={endCall}
+          style={{
+            flex: 1,
+            padding: "18px",
+            fontSize: "20px",
+            borderRadius: "12px",
+            border: "none",
+            background: "#ef4444",
+            color: "white",
+            cursor: "pointer",
+          }}
+        >
+          📞 End Call
         </button>
       </div>
     </div>

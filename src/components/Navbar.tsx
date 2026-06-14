@@ -4,6 +4,10 @@ import { Menu, X, LogOut, User as UserIcon } from "lucide-react";
 import { Logo } from "./Logo";
 import { useAuth } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
+import {
+  useLanguage,
+  type LanguageType,
+} from "@/context/LanguageContext";
 
 const publicNav = [
   { to: "/", label: "Home" },
@@ -26,6 +30,8 @@ export function Navbar() {
   const navigate = useNavigate();
   const nav = user ? [...publicNav, ...protectedNav] : publicNav;
 
+  const { language, setLanguage } = useLanguage();
+
   return (
     <header className="sticky top-0 z-50 glass border-b border-border/60">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
@@ -38,9 +44,8 @@ export function Navbar() {
               <Link
                 key={n.to}
                 to={n.to}
-                className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                  active ? "text-primary bg-primary/10" : "text-foreground/70 hover:text-foreground hover:bg-secondary"
-                }`}
+                className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${active ? "text-primary bg-primary/10" : "text-foreground/70 hover:text-foreground hover:bg-secondary"
+                  }`}
               >
                 {n.label}
               </Link>
@@ -49,6 +54,22 @@ export function Navbar() {
         </nav>
 
         <div className="hidden lg:flex items-center gap-2">
+          <select
+            value={language}
+            onChange={(e) =>
+              setLanguage(
+                e.target.value as LanguageType
+              )
+            }
+            className="border rounded-md px-3 py-2 text-sm bg-white"
+          >
+            <option value="en">English</option>
+            <option value="hi">हिन्दी</option>
+            <option value="mr">मराठी</option>
+            <option value="ta">தமிழ்</option>
+            <option value="te">తెలుగు</option>
+          </select>
+
           {user ? (
             <>
               <Link to="/profile" className="flex items-center gap-2 rounded-full bg-secondary px-3 py-1.5 text-sm hover:bg-accent transition">

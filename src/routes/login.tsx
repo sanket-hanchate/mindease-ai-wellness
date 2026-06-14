@@ -62,7 +62,9 @@ function LoginPage() {
             ))}
           </div>
         </div>
-        <p className="relative text-sm text-white/70">"MindEase has become part of my daily routine." — Sara M.</p>
+        <p className="relative text-sm text-white/70">
+          "Mental health is not a destination, but a process. It's about how you drive, not where you're going." — Noam Shpancer
+        </p>
       </div>
 
       <div className="flex items-center justify-center p-6 sm:p-12 bg-background">

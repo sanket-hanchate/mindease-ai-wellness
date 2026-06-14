@@ -6,6 +6,11 @@ import {
   MessageCircle, Activity, Brain, BookHeart, LineChart, Shield, Sparkles,
   ArrowRight, Heart, Users, Clock, Lock, Star,
 } from "lucide-react";
+import { useLanguage }
+from "@/context/LanguageContext";
+
+import { translations }
+from "@/lib/translations";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -48,6 +53,12 @@ const testimonials = [
 ];
 
 function Index() {
+  const { language } =
+  useLanguage();
+
+const t =
+  translations[language];
+
   return (
     <Layout>
       <section className="relative overflow-hidden bg-gradient-hero">
@@ -62,12 +73,11 @@ function Index() {
               <Sparkles className="h-3.5 w-3.5 text-primary" /> Powered by clinical research + modern AI
             </span>
             <h1 className="mt-5 text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-balance">
-              Personalized Support for{" "}
+              {t.heroTitle}
               <span className="bg-gradient-primary bg-clip-text text-transparent">Mental</span> and Emotional Well-Being
             </h1>
             <p className="mt-5 text-lg text-muted-foreground max-w-2xl text-balance">
-              Accessible, evidence-based mental wellness support powered by AI — built for the moments
-              traditional care can't reach.
+             {t.heroDesc}
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
 
@@ -76,7 +86,7 @@ function Index() {
                   size="lg"
                   className="bg-gradient-primary text-white shadow-glow hover:opacity-95"
                 >
-                  Start Chat
+                  {t.startChat}
                   <ArrowRight className="ml-1 h-4 w-4" />
                 </Button>
               </Link>
@@ -86,7 +96,7 @@ function Index() {
                   size="lg"
                   className="bg-gradient-primary text-white shadow-glow hover:opacity-95"
                 >
-                  Video Chat With Lara
+                  {t.videoChat}
                   <ArrowRight className="ml-1 h-4 w-4" />
                 </Button>
               </Link>
@@ -181,31 +191,6 @@ function Index() {
         </div>
       </section>
 
-      <section className="py-20 bg-gradient-soft">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-center">Loved by people learning to feel better</h2>
-          <div className="mt-12 grid gap-6 md:grid-cols-3">
-            {testimonials.map((t) => (
-              <div key={t.name} className="rounded-2xl bg-card border border-border p-6 shadow-soft">
-                <div className="flex gap-1 mb-3">
-                  {[1, 2, 3, 4, 5].map((i) => <Star key={i} className="h-4 w-4 fill-warning text-warning" />)}
-                </div>
-                <p className="text-sm leading-relaxed text-foreground/90">"{t.text}"</p>
-                <div className="mt-4 flex items-center gap-3">
-                  <div className="h-9 w-9 rounded-full bg-gradient-primary grid place-items-center text-white text-sm font-semibold">
-                    {t.name.charAt(0)}
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium">{t.name}</p>
-                    <p className="text-xs text-muted-foreground">{t.role}</p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       <section className="py-20">
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
           <div className="relative overflow-hidden rounded-3xl bg-gradient-primary p-10 md:p-14 text-white shadow-glow">
@@ -216,7 +201,7 @@ function Index() {
               <p className="mt-3 max-w-xl text-white/90">Join thousands building healthier mental habits with MindEase. Free to start, no credit card needed.</p>
               <div className="mt-6 flex flex-wrap gap-3">
                 <Link to="/register"><Button size="lg" className="bg-white text-primary hover:bg-white/90">Create free account</Button></Link>
-                <Link to="/chat"><Button size="lg" variant="outline" className="border-white/40 text-white hover:bg-white/10">Try the chat</Button></Link>
+                <Link to="/chat"><Button size="lg" variant="outline" className="bg-white text-primary hover:bg-white/90">Try the chat</Button></Link>
               </div>
             </div>
           </div>
