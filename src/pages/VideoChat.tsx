@@ -3,10 +3,11 @@ import WebcamFeed from "@/components/WebcamFeed";
 import laraAvatar from "../../assets/lara.png";
 import "../../assets/avatar.css";
 import { useNavigate } from "@tanstack/react-router";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function VideoChat() {
   const navigate = useNavigate();
-
+  const { language } = useLanguage();
   const [messages, setMessages] = useState<any[]>([]);
   const [conversationId, setConversationId] = useState<string>("");
   const [isListening, setIsListening] =
@@ -20,8 +21,6 @@ export default function VideoChat() {
 
   const [crisisMode, setCrisisMode] =
     useState(false);
-
-
 
 
   const createConversation =
@@ -97,7 +96,16 @@ export default function VideoChat() {
     const recognition =
       new SpeechRecognition();
 
-    recognition.lang = "en-US";
+    const languageMap: Record<string, string> = {
+      en: "en-US",
+      hi: "hi-IN",
+      mr: "mr-IN",
+      ta: "ta-IN",
+      te: "te-IN",
+    };
+
+    recognition.lang =
+      languageMap[language] || "en-US";
 
     recognition.interimResults = false;
 
@@ -135,28 +143,56 @@ export default function VideoChat() {
       const voices =
         window.speechSynthesis.getVoices();
 
-      const hindiVoice =
-        voices.find(
-          v =>
-            v.name === "Google हिन्दी"
-        );
+      window.speechSynthesis.cancel();
+      window.speechSynthesis.speak(utterance);
 
-      if (hindiVoice) {
+      let langCode = "en-US";
 
-        console.log(
-          "Using Voice:",
-          hindiVoice.name
-        );
+      switch (language) {
 
-        utterance.voice =
-          hindiVoice;
+        case "hi":
+          langCode = "hi-IN";
+          break;
 
-        utterance.lang =
-          "hi-IN";
+        case "mr":
+          langCode = "mr-IN";
+          break;
+
+        case "ta":
+          langCode = "ta-IN";
+          break;
+
+        case "te":
+          langCode = "te-IN";
+          break;
+
+        default:
+          langCode = "en-US";
       }
 
-      utterance.rate = 1.05;
-      utterance.pitch = 1.05;
+      let voice;
+
+      if (language === "en") {
+        voice = voices.find(
+          (v) =>
+            v.name.includes("Zira") ||
+            v.name.includes("Female")
+        );
+      } else {
+        voice = voices.find(
+          (v) =>
+            v.lang === langCode
+        );
+      }
+
+      if (voice) {
+        utterance.voice = voice;
+      }
+
+      utterance.lang = langCode;
+
+      utterance.rate = 1;
+      utterance.pitch = 1;
       utterance.volume = 1;
 
       utterance.onend = () => {
@@ -164,10 +200,7 @@ export default function VideoChat() {
       };
 
       window.speechSynthesis.cancel();
-
-      window.speechSynthesis.speak(
-        utterance
-      );
+      window.speechSynthesis.speak(utterance);
     };
 
     if (
@@ -204,6 +237,7 @@ export default function VideoChat() {
         body: JSON.stringify({
           message,
           conversationId,
+          language
         }),
       }
     );

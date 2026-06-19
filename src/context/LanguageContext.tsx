@@ -5,7 +5,7 @@ import {
   useEffect
 } from "react";
 
-type LanguageType =
+export type LanguageType =
   | "en"
   | "hi"
   | "mr"

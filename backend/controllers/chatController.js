@@ -12,7 +12,44 @@ exports.sendMessage = async (req, res) => {
     const {
       message,
       conversationId,
+      language,
     } = req.body;
+
+    let languagePrompt = "";
+
+    switch (language) {
+
+      case "hi":
+        languagePrompt =
+          "Reply ONLY in Hindi.";
+        break;
+
+      case "mr":
+        languagePrompt =
+          "Reply ONLY in Marathi.";
+        break;
+
+      case "ta":
+        languagePrompt =
+          "Reply ONLY in Tamil.";
+        break;
+
+      case "te":
+        languagePrompt =
+          "Reply ONLY in Telugu.";
+        break;
+
+      default:
+        languagePrompt =
+          "Reply ONLY in English.";
+    }
+
+    const finalPrompt = `
+${languagePrompt}
+
+User Message:
+${message}
+`;
 
     const userId =
       req.user.userId;
@@ -58,15 +95,15 @@ exports.sendMessage = async (req, res) => {
     if (
       conversation &&
       conversation.title ===
-        "New Chat"
+      "New Chat"
     ) {
 
       conversation.title =
         message.length > 30
           ? message.substring(
-              0,
-              30
-            ) + "..."
+            0,
+            30
+          ) + "..."
           : message;
 
       await conversation.save();
@@ -169,18 +206,16 @@ calmly and professionally.
 
     const completion =
       await groq.chat.completions.create({
-        model:
-          "llama-3.3-70b-versatile",
+        model: "llama-3.3-70b-versatile",
 
         messages: [
           {
             role: "system",
-            content:
-              systemPrompt,
+            content: systemPrompt,
           },
           {
             role: "user",
-            content: message,
+            content: finalPrompt,
           },
         ],
       });
