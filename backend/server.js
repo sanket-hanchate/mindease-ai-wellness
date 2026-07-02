@@ -18,8 +18,9 @@ require(
   "./routes/conversationRoutes"
 );
 
-const app = express();
+const liveportraitRoutes = require("./routes/liveportraitRoutes");
 
+const app = express();
 connectDB();
 
 app.use(cors());
@@ -36,6 +37,11 @@ app.use(
 app.use(
   "/api/conversations",
   conversationRoutes
+);
+
+app.use(
+  "/api/liveportrait",
+  liveportraitRoutes
 );
 
 app.listen(process.env.PORT,()=>{

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import WebcamFeed from "@/components/WebcamFeed";
-import laraAvatar from "../../assets/lara.png";
+import LivePortraitAvatar from "@/components/LivePortraitAvatar";
 import "../../assets/avatar.css";
 import { useNavigate } from "@tanstack/react-router";
 import { useLanguage } from "@/context/LanguageContext";
@@ -21,6 +21,9 @@ export default function VideoChat() {
 
   const [crisisMode, setCrisisMode] =
     useState(false);
+
+  const [currentSpeechText, setCurrentSpeechText] =
+    useState("");
 
 
   const createConversation =
@@ -271,6 +274,7 @@ export default function VideoChat() {
       },
     ]);
 
+    setCurrentSpeechText(data.reply);
     speak(data.reply);
   };
 
@@ -361,86 +365,137 @@ export default function VideoChat() {
             flexDirection: "column",
             color: "white",
             position: "relative",
+            border: crisisMode
+              ? "5px solid #ff4444"
+              : isListening
+                ? "5px solid #22c55e"
+                : isThinking
+                  ? "5px solid #f59e0b"
+                  : isSpeaking
+                    ? "5px solid #8b5cf6"
+                    : "5px solid #3b82f6",
+            boxShadow: crisisMode
+              ? "0 0 40px #ff4444"
+              : isListening
+                ? "0 0 30px #22c55e"
+                : isThinking
+                  ? "0 0 30px #f59e0b"
+                  : isSpeaking
+                    ? "0 0 35px #8b5cf6"
+                    : "0 0 20px #3b82f6",
+            transition: "border 0.3s ease, box-shadow 0.3s ease", 
+            overflow: "hidden",
           }}
         >
-          <img
-            src={laraAvatar}
-            alt="Lara"
-            className={
-              isSpeaking
-                ? "avatar avatar-speaking"
-                : "avatar"
-            }
+          {/* Avatar occupies 80-90% of the container height */}
+          <div
             style={{
-              border: crisisMode
-                ? "5px solid #ff4444"
-                : isListening
-                  ? "5px solid #22c55e"
-                  : isThinking
-                    ? "5px solid #f59e0b"
-                    : isSpeaking
-                      ? "5px solid #8b5cf6"
-                      : "5px solid #3b82f6",
-
-              boxShadow: crisisMode
-                ? "0 0 40px #ff4444"
-                : isListening
-                  ? "0 0 30px #22c55e"
-                  : isThinking
-                    ? "0 0 30px #f59e0b"
-                    : isSpeaking
-                      ? "0 0 35px #8b5cf6"
-                      : "0 0 20px #3b82f6",
-            }}
-          />
-
-          <h2
-            style={{
-              marginTop: "20px",
-              marginBottom: "5px",
+              width: "100%",
+              height: "85%",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
             }}
           >
-            {
-              crisisMode
-                ? "Lara - Crisis Support"
-                : "Lara"
-            }
-          </h2>
+            <LivePortraitAvatar
+              isListening={isListening}
+              isThinking={isThinking}
+              isSpeaking={isSpeaking}
+              crisisMode={crisisMode}
+              text={currentSpeechText}
+            />
+          </div>
 
-          <p
+          {/* Floating Crisis Mode Indicator */}
+          {crisisMode && (
+            <div
+              style={{
+                position: "absolute",
+                top: "15px",
+                right: "15px",
+                background: "#ff4444",
+                color: "white",
+                padding: "6px 14px",
+                borderRadius: "20px",
+                fontSize: "0.875rem",
+                fontWeight: "bold",
+                boxShadow: "0 4px 10px rgba(0,0,0,0.3)",
+                zIndex: 10,
+              }}
+            >
+              🚨 Crisis Mode Activated
+            </div>
+          )}
+
+          {/* BOTTOM SECTION OVERLAY */}
+          <div
             style={{
-              color: "#ccc",
-              marginBottom: "15px",
+              position: "absolute",
+              bottom: 0,
+              left: 0,
+              right: 0,
+              background: "rgba(0, 0, 0, 0.75)",
+              backdropFilter: "blur(10px)",
+              padding: "15px 20px",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              borderTop: "1px solid rgba(255, 255, 255, 0.1)",
+              zIndex: 10,
             }}
           >
-            AI Mental Wellness Companion
-          </p>
-
-          {
-            crisisMode && (
-              <div
+            <div>
+              <h2
                 style={{
-                  background: "#ff4444",
-                  color: "white",
-                  padding: "10px",
-                  borderRadius: "10px",
-                  marginBottom: "15px",
+                  margin: 0,
+                  fontSize: "1.25rem",
+                  fontWeight: "bold",
                 }}
               >
-                🚨 Crisis Mode Activated
-              </div>
-            )
-          }
-
-          <p>
-            {isListening
-              ? "Listening..."
-              : isThinking
-                ? "Thinking..."
-                : isSpeaking
-                  ? "Speaking..."
-                  : "Ready"}
-          </p>
+                {crisisMode ? "Lara - Crisis Support" : "Lara"}
+              </h2>
+              <p
+                style={{
+                  margin: "2px 0 0 0",
+                  color: "#ccc",
+                  fontSize: "0.875rem",
+                }}
+              >
+                Mental Wellness Companion
+              </p>
+            </div>
+            
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "8px",
+                background: isSpeaking ? "rgba(139, 92, 246, 0.2)" : isListening ? "rgba(34, 197, 94, 0.2)" : isThinking ? "rgba(245, 158, 11, 0.2)" : "rgba(255, 255, 255, 0.1)",
+                padding: "6px 14px",
+                borderRadius: "20px",
+                border: `1px solid ${isSpeaking ? "#8b5cf6" : isListening ? "#22c55e" : isThinking ? "#f59e0b" : "rgba(255, 255, 255, 0.2)"}`,
+              }}
+            >
+              <span
+                style={{
+                  width: "8px",
+                  height: "8px",
+                  borderRadius: "50%",
+                  background: isSpeaking ? "#8b5cf6" : isListening ? "#22c55e" : isThinking ? "#f59e0b" : "#3b82f6",
+                  display: "inline-block",
+                }}
+              />
+              <span style={{ fontSize: "0.875rem", fontWeight: 500 }}>
+                {isListening
+                  ? "Listening..."
+                  : isThinking
+                    ? "Thinking..."
+                    : isSpeaking
+                      ? "Speaking..."
+                      : "Ready"}
+              </span>
+            </div>
+          </div>
         </div>
       </div>
 
